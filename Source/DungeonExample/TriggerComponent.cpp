@@ -40,17 +40,17 @@ AActor* UTriggerComponent::GetAcceptableActor() const {
 	TArray<AActor*> Actors;
 	GetOverlappingActors(Actors);
 
-	if (Actors.Num() > 0) {
-		/*for (int num = 0; num < Actors.Num(); num++) {
-			FString ActorName = Actors[num]->GetActorNameOrLabel();
-			UE_LOG(LogTemp, Display, TEXT("Overlapping: %s"), *ActorName);
-		}*/
+	/*for (int num = 0; num < Actors.Num(); num++) {
+		FString ActorName = Actors[num]->GetActorNameOrLabel();
+		UE_LOG(LogTemp, Display, TEXT("Overlapping: %s"), *ActorName);
+	}*/
 
-		// Alternative loop
-		for (AActor* Actor : Actors) {
-			if (Actor->ActorHasTag(AcceptableActorTag)) {
-				return Actor;
-			}
+	// Alternative loop
+	for (AActor* Actor : Actors) {
+		bool HasAcceptableTag = Actor->ActorHasTag(AcceptableActorTag);
+		bool IsGrabbed = Actor->ActorHasTag("Grabbed");
+		if (HasAcceptableTag && !IsGrabbed ) {
+			return Actor;
 		}
 	}
 
